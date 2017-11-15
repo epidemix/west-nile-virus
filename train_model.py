@@ -3,11 +3,18 @@ import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
+import process_data as process
 
 
 def main():
-    data_file = "processed_data/processed_train.csv"
-    model_data = pd.read_csv(data_file)
+    data_file = "data/processed_train.csv"
+    try:
+        model_data = pd.read_csv(data_file)
+    except:
+        print('Processed data missing.\nProcessing raw data.')
+        process.main()
+        model_data = pd.read_csv(data_file)
+
     model_data = model_data.drop(['date', 'nummosquitos'], axis=1)
     y = model_data.pop('wnvpresent')
     X = model_data
