@@ -18,12 +18,12 @@ def main():
     model_data = model_data.drop(['date', 'nummosquitos'], axis=1)
     y = model_data.pop('wnvpresent')
     X = model_data
-    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
 
     print(X_train.columns)
 
-    forest = RandomForestClassifier(class_weight='balanced_subsample', n_jobs=-1)
+    forest = RandomForestClassifier(class_weight='balanced_subsample', n_jobs=-1, random_state=42)
 
     param_grid = dict(max_depth=np.random.randint(1, 10, 5),
                       min_samples_split=np.random.sample(5),
