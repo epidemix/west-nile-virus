@@ -30,12 +30,19 @@ def main():
     print("predict wnv: \n", data.columns)
 
     predictions = model.predict(data)
-    print(predictions.shape)
+    probabilities = model.predict_proba(data)
+    print(probabilities)
 
     submission = pd.DataFrame(predictions, columns=['WnvPresent'])
     submission.index.rename('Id', inplace=True)
     submission.index = submission.index + 1
-    submission.to_csv('submission_data/submission.csv')
+    submission.to_csv('data/kaggle_submission.csv')
+
+    probs = pd.DataFrame(probabilities, columns=['wnv_probablitiy'])
+    probs.index.rename('Id', inplace=True)
+    probs.index = submission.index + 1
+    probs.to_csv('data/prediction_probabilities.csv')
+
     print("Done.")
 
 
