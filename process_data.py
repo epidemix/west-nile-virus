@@ -3,8 +3,6 @@ import numpy as np
 from datetime import datetime as dt
 
 
-
-
 def get_lags(data, x, lag, f=None):
     lag_avg = pd.DataFrame(data[x])
 

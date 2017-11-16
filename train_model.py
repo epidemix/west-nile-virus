@@ -17,32 +17,40 @@ def main():
 
     model_data = model_data.drop(['date', 'nummosquitos'], axis=1)
     y = model_data.pop('wnvpresent')
-    X = model_data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+    X = model_data.drop('week', axis=1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
 
+    try:
+        forest = joblib.load('wnv_predict.pkl')
+    except:
+        forest = RandomForestClassifier(class_weight='balanced_subsample',
+                                        n_jobs=-1,
+                                        random_state=42)
 
-    print(X_train.columns)
+        param_grid = dict(max_depth=np.random.randint(1, 10, 5),
+                          min_samples_split=np.random.sample(5),
+                          min_samples_leaf=np.random.sample(5)/2,
+                          min_weight_fraction_leaf=np.random.sample(5)/2,
+                          max_features=np.random.sample(5))
 
-    forest = RandomForestClassifier(class_weight='balanced_subsample', n_jobs=-1, random_state=42)
+        grid = GridSearchCV(forest,
+                            param_grid,
+                            cv=10,
+                            scoring='neg_log_loss',
+                            n_jobs=-1,
+                            verbose=True)
 
-    param_grid = dict(max_depth=np.random.randint(1, 10, 5),
-                      min_samples_split=np.random.sample(5),
-                      min_samples_leaf=np.random.sample(5)/2,
-                      min_weight_fraction_leaf=np.random.sample(5)/2,
-                      max_features=np.random.sample(5))
+        grid.fit(X_train, y_train)
+        forest = grid.best_estimator_
+        print(forest)
+        joblib.dump(forest, 'wnv_predict.pkl')
 
-    grid = GridSearchCV(forest,
-                        param_grid,
-                        cv=10,
-                        scoring='neg_log_loss',
-                        n_jobs=-1,
-                        verbose=True)
+    probabilities = forest.predict_proba(X)
 
-    grid.fit(X_train, y_train)
-    forest = grid.best_estimator_
-    print(forest)
-    joblib.dump(forest, 'wnv_predict.pkl')
-
+    probs = pd.DataFrame(probabilities[:, 1], columns=['wnv_probablitiy'])
+    probs.index.rename('Id', inplace=True)
+    probs.index = probs.index + 1
+    probs.to_csv('data/prediction_probabilities.csv')
 
 if __name__ == "__main__":
     main()

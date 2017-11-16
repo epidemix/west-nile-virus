@@ -20,7 +20,7 @@ def main():
     #     model_2 = joblib.load('mosquito_predict.pkl')
 
     data = pd.read_csv("/repos/epidemix/west-nile-virus/processed_data/processed_test.csv")
-    data = data.drop(['date', 'unspecified_culex'], axis=1)
+    data = data.drop(['date', 'unspecified_culex', 'week'], axis=1)
     data['id'] = data['id'] + 1
     data.set_index('id', inplace=True)
 
@@ -38,9 +38,9 @@ def main():
     submission.index = submission.index + 1
     submission.to_csv('data/kaggle_submission.csv')
 
-    probs = pd.DataFrame(probabilities, columns=['wnv_probablitiy'])
+    probs = pd.DataFrame(probabilities[:,1], columns=['wnv_probablitiy'])
     probs.index.rename('Id', inplace=True)
-    probs.index = submission.index + 1
+    probs.index = probs.index + 1
     probs.to_csv('data/prediction_probabilities.csv')
 
     print("Done.")
