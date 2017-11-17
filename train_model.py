@@ -7,6 +7,10 @@ import process_data as process
 
 
 def main():
+    """
+        Train prediction model
+
+    """
     print('Training model...')
     data_file = "processed_data/processed_train.csv"
     try:
@@ -23,6 +27,7 @@ def main():
 
     try:
         forest = joblib.load('models/wnv_predict.pkl')
+        print('Existing model found.')
     except:
         forest = RandomForestClassifier(class_weight='balanced_subsample',
                                         n_jobs=-1,

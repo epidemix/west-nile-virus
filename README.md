@@ -20,8 +20,9 @@ Data:
 Generated Data:
 - `results/kaggle_submission.csv`
 - `results/prediction_probabilities.csv`
-- `spray_recommendations/recommendation_data.csv`
-
+- `spray_recommendations/aggressive_recommendation.csv`
+- `spray_recommendations/moderate_recommendation.csv`
+- `spray_recommendations/conservative_recommendation.csv`
 
 Use:
 

@@ -3,6 +3,20 @@ import numpy as np
 
 
 def get_lags(data, x, lag, f=None):
+    """
+        Generate lagged variables
+
+    :param data: object that contains the data
+    :type data: pandas.DataFrame
+    :param x: variable of interest
+    :type x: str
+    :param lag: number of periods for the lag
+    :type lag: int
+    :param f: function for aggregation
+    :type f: func
+    :return: lagged variables
+    :rtype: pandas.Series
+    """
     lag_avg = pd.DataFrame(data[x])
 
     def assign_na(x):
@@ -68,7 +82,9 @@ def main(cost=2500):
     df = meaned.merge(summed, on=['Date', 'zip_code'])
     df = df.merge(dfsss, on=['Date', 'zip_code'], how='left')
     df = df.drop(['Latitude_y', 'Longitude_y', 'NumMosquitos_y'], axis=1)
-    df = df.rename(columns={'Date': 'date', 'Latitude_x': 'latitude', 'Longitude_x': 'longitude',
+    df = df.rename(columns={'Date': 'date',
+                            'Latitude_x': 'latitude',
+                            'Longitude_x': 'longitude',
                             'NumMosquitos_x': 'num_mosquitos'})
 
     df['date'] = pd.to_datetime(df['date'])
@@ -91,6 +107,7 @@ def main(cost=2500):
     deaths['averaged_deaths'] = get_lags(deaths, 'averaged_deaths', 5, np.mean)
     df = df.merge(deaths, on='year')
 
+    # create metric variables
     df['at_risk_population_percent'] = df['percent_age_over_65'] + df['percent_age_under_14']
     df['at_risk_population'] = df['at_risk_population_percent'] / 100 * df['total_population']
     df['proportional_averaged_cases'] = df['population_porportion'] * df['averaged_cases']
@@ -108,13 +125,24 @@ def main(cost=2500):
     predictions['Id'] -= 1
     predictions = predictions.set_index('Id')
 
+    # recombine the predictions
     df = df.join(predictions)
 
     df['cost_to_spray'] = spray_cost * df['land_area']
-
     df['spray_metric'] = df['wnv_probablitiy'] * df['at_risk_population'] / df['cost_to_spray'] * 100
 
-    df.to_csv('spray_recommendations/recommendation_data.csv')
+    # isolate essential variables
+    df = df[['date', 'zip_code', 'wnv_probablitiy', 'cost_to_spray', 'spray_metric']]
+
+    aggressive = df[df['spray_metric'] > 6]
+    moderate = df[df['spray_metric'] > 7]
+    conservative = df[df['spray_metric'] > 8]
+
+    # write recommendation data
+    aggressive.to_csv('spray_recommendations/aggressive_recommendation.csv')
+    moderate.to_csv('spray_recommendations/moderate_recommendation.csv')
+    conservative.to_csv('spray_recommendations/conservative_recommendation.csv')
+    print('Recommendation files written.')
 
 
 if __name__ == "__main__":

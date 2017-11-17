@@ -2,20 +2,34 @@ import pandas as pd
 import numpy as np
 
 
-def get_lags(data, x, lag, f=None):
-    lag_avg = pd.DataFrame(data[x])
+def get_lags(data, X, lag, f=None):
+    """
+        Generate lagged variables
 
-    def assign_na(x):
+    :param data: object that contains the data
+    :type data: pandas.DataFrame
+    :param x: variable of interest
+    :type x: str
+    :param lag: number of periods for the lag
+    :type lag: int
+    :param f: function for aggregation
+    :type f: func
+    :return: lagged variables
+    :rtype: pandas.Series
+    """
+    lag_avg = pd.DataFrame(data[X])
+
+    def assign_na(X):
         try:
-            y = np.float64(x)
+            y = np.float64(X)
         except:
             y = np.NaN
         return y
 
-    lag_avg[x] = lag_avg[x].apply(assign_na)
+    lag_avg[X] = lag_avg[X].apply(assign_na)
 
     for i in range(1, lag):
-        lag_avg['lag_{}'.format(i)] = lag_avg[x].copy().shift(i)
+        lag_avg['lag_{}'.format(i)] = lag_avg[X].copy().shift(i)
 
     ten_day_avg = []
     for i, row in lag_avg.iterrows():
@@ -29,6 +43,7 @@ def get_lags(data, x, lag, f=None):
 
 def main():
     for file in ['train.csv', 'test.csv']:
+        print("Processing {}".format(file))
         data_file = file
         train = pd.read_csv('data/' + data_file)
         species_dummies = pd.get_dummies(train['Species'])
