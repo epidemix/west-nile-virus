@@ -7,7 +7,8 @@ import process_data as process
 
 
 def main():
-    data_file = "data/processed_train.csv"
+    print('Training model...')
+    data_file = "processed_data/processed_train.csv"
     try:
         model_data = pd.read_csv(data_file)
     except:
@@ -21,7 +22,7 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y)
 
     try:
-        forest = joblib.load('wnv_predict.pkl')
+        forest = joblib.load('models/wnv_predict.pkl')
     except:
         forest = RandomForestClassifier(class_weight='balanced_subsample',
                                         n_jobs=-1,
@@ -43,7 +44,7 @@ def main():
         grid.fit(X_train, y_train)
         forest = grid.best_estimator_
         print(forest)
-        joblib.dump(forest, 'wnv_predict.pkl')
+        joblib.dump(forest, 'models/wnv_predict.pkl')
 
     probabilities = forest.predict_proba(X)
 

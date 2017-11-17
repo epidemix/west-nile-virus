@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime as dt
 
 
 def get_lags(data, x, lag, f=None):
@@ -27,6 +26,7 @@ def get_lags(data, x, lag, f=None):
 
     return pd.Series(ten_day_avg)
 
+
 def main():
     for file in ['train.csv', 'test.csv']:
         data_file = file
@@ -38,7 +38,7 @@ def main():
         df['year'] = df['date'].dt.year
         df['week'] = df['date'].apply(lambda x: x.isocalendar()[1])
         
-        spray_traps = pd.read_csv('data/spray_traps.csv')
+        spray_traps = pd.read_csv('data/traps.csv')
         spray_traps['Date'] = pd.to_datetime(spray_traps['Date'])
         spray_traps['year'] = spray_traps['Date'].dt.year
         spray_traps['week'] = spray_traps['Date'].apply(lambda x: x.isocalendar()[1])
@@ -66,11 +66,13 @@ def main():
         w = w.rename(columns={c: c.lower() for c in w.columns})
         model_data = df.merge(w, on="date", how='left').set_index('date')
 
-        model_data = model_data.drop(['address', 'species', 'block', 'street', 'trap', 'addressnumberandstreet', 'addressaccuracy'], axis=1)
+        model_data = model_data.drop(['address', 'species', 'block', 'street',
+                                      'trap', 'addressnumberandstreet', 'addressaccuracy'], axis=1)
 
-        print(model_data.shape)
 
         model_data.to_csv('processed_data/processed_' + data_file)
+
+    print('Data processing complete.')
 
 
 if __name__ == "__main__":

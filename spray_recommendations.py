@@ -116,5 +116,6 @@ def main():
 
     df.to_csv('data/recommendation_data.csv')
 
+
 if __name__ == "__main__":
     main()

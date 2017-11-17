@@ -5,7 +5,7 @@ from sklearn.externals import joblib
 def main():
     model = joblib.load('wnv_predict.pkl')
 
-    data = pd.read_csv("/repos/epidemix/west-nile-virus/processed_data/processed_test.csv")
+    data = pd.read_csv("processed_data/processed_test.csv")
     data = data.drop(['date', 'unspecified_culex'], axis=1)
     data['id'] = data['id'] + 1
     data.set_index('id', inplace=True)
