@@ -1,24 +1,31 @@
-# West Nile Virus
-## GA DSI-6 Project 4
+# Predicting West Nile Virus in Chicago
+## GA DSI-6: Project 4
 
-[Here](https://www.kaggle.com/c/predict-west-nile-virus) is the link to the kaggle page.
+[Here](https://www.kaggle.com/c/predict-west-nile-virus) is a link to the related kaggle page.
 
 Program Files:
-- master.py
-- process_data.py
-- train_model.py
-- predict_wnv.py
-- spray_recommendations.py
+- `master.py`
+- `process_data.py`
+- `train_model.py`
+- `predict_wnv.py`
+- `spray_recommendations.py`
 
 Data:
-- data/train.csv
-- data/WNV_Pop_Age.csv
-- data/demographics.csv
-- data/WNV_Pop_Age_Temp_Geog.csv
-- data/prediction_probabilities.csv
-- data/traps.csv
+- `data/train.csv`
+- `data/test.csv`
+- `data/geography.csv`
+- `data/demographics.csv`
+- `data/traps.csv`
 
 Generated Data:
-- data/recommendation_data.csv
-- 
+- `results/kaggle_submission.csv`
+- `results/prediction_probabilities.csv`
+- `spray_recommendations/recommendation_data.csv`
 
+
+Use:
+
+To use the prediction system, first run the file `process_data.py` to prepare the data sets.
+Then run the file `master.py`.
+Once this program has completed, the mosquito predictions can be found in the `results` directory.
+The advised spray recommendations can then be found in the `spray_recommendations` directory. 

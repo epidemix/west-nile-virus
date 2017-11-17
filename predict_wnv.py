@@ -3,7 +3,8 @@ from sklearn.externals import joblib
 
 
 def main():
-    model = joblib.load('wnv_predict.pkl')
+    print("Predicting skeeters...")
+    model = joblib.load('models/wnv_predict.pkl')
 
     data = pd.read_csv("processed_data/processed_test.csv")
     data = data.drop(['date', 'unspecified_culex'], axis=1)
@@ -16,14 +17,14 @@ def main():
     submission = pd.DataFrame(predictions, columns=['WnvPresent'])
     submission.index.rename('Id', inplace=True)
     submission.index = submission.index + 1
-    submission.to_csv('submission_data/kaggle_submission.csv')
+    submission.to_csv('results/kaggle_submission.csv')
 
     probs = pd.DataFrame(probabilities[:,1], columns=['wnv_probablitiy'])
     probs.index.rename('Id', inplace=True)
     probs.index = probs.index + 1
-    probs.to_csv('data/prediction_probabilities.csv')
+    probs.to_csv('results/prediction_probabilities.csv')
 
-    print("Done.")
+    print("Predictions complete.")
 
 
 if __name__ == "__main__":

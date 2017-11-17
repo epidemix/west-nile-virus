@@ -28,7 +28,7 @@ def main():
                                         n_jobs=-1,
                                         random_state=42)
 
-        param_grid = dict(max_depth=np.random.randint(1, 10, 5),
+        param_grid = dict(max_depth=np.random.randint(1, 10, 10),
                           min_samples_split=np.random.sample(5),
                           min_samples_leaf=np.random.sample(5)/2,
                           min_weight_fraction_leaf=np.random.sample(5)/2,
@@ -52,6 +52,7 @@ def main():
     probs.index.rename('Id', inplace=True)
     probs.index = probs.index + 1
     probs.to_csv('data/prediction_probabilities.csv')
+    print('Training complete.')
 
 if __name__ == "__main__":
     main()

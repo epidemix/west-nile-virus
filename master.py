@@ -12,6 +12,7 @@ def main():
         train.main()
     predict.main()
     spray.main()
+    print('Done.')
 
 
 if __name__ == "__main__":

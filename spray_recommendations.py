@@ -27,13 +27,13 @@ def get_lags(data, x, lag, f=None):
     return pd.Series(ten_day_avg)
 
 
-def main():
-    spray_cost = 2500  # per square mile
-    chicago_total_cost = 425000
+def main(cost=2500):
+    print('Generating policy recommendations...')
+    spray_cost = cost  # per square mile
 
     df_in = pd.read_csv('data/train.csv')
 
-    zip_codes = pd.read_csv('data/WNV_Pop_Age.csv')
+    zip_codes = pd.read_csv('data/zip_codes.csv')
 
     zip_codes = zip_codes[['Trap', 'ZipCode']].rename(columns={'Trap': 'trap',
                                                                'ZipCode': 'zip_code'})
@@ -51,7 +51,7 @@ def main():
 
     dfsss = dfsss.drop(to_drop, axis=1)
 
-    geo = pd.read_csv('data/WNV_Pop_Age_Temp_Geog.csv')
+    geo = pd.read_csv('data/geography.csv')
     geo = geo[['ZipCode', 'LandArea', 'WaterArea']]
     geo = geo.groupby('ZipCode').mean().reset_index().rename(columns={'ZipCode': 'zip_code'})
 
@@ -104,7 +104,7 @@ def main():
 
     df = df.drop(to_drop_2, axis=1)
 
-    predictions = pd.read_csv('data/prediction_probabilities.csv')
+    predictions = pd.read_csv('results/prediction_probabilities.csv')
     predictions['Id'] -= 1
     predictions = predictions.set_index('Id')
 
@@ -114,7 +114,7 @@ def main():
 
     df['spray_metric'] = df['wnv_probablitiy'] * df['at_risk_population'] / df['cost_to_spray'] * 100
 
-    df.to_csv('data/recommendation_data.csv')
+    df.to_csv('spray_recommendations/recommendation_data.csv')
 
 
 if __name__ == "__main__":
