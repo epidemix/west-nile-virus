@@ -17,7 +17,7 @@ def main():
 
     model_data = model_data.drop(['date', 'nummosquitos'], axis=1)
     y = model_data.pop('wnvpresent')
-    X = model_data.drop('week', axis=1)
+    X = model_data
     X_train, X_test, y_train, y_test = train_test_split(X, y)
 
     try:

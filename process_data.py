@@ -66,12 +66,11 @@ def main():
         w = w.rename(columns={c: c.lower() for c in w.columns})
         model_data = df.merge(w, on="date", how='left').set_index('date')
 
-        model_data = model_data.drop(['address', 'species', 'block', 'street', 'trap', 'longitude', 'latitude',
-                                      'year', 'addressnumberandstreet', 'addressaccuracy'], axis=1)
+        model_data = model_data.drop(['address', 'species', 'block', 'street', 'trap', 'addressnumberandstreet', 'addressaccuracy'], axis=1)
 
         print(model_data.shape)
 
-        model_data.to_csv('data/processed_' + data_file)
+        model_data.to_csv('processed_data/processed_' + data_file)
 
 
 if __name__ == "__main__":
