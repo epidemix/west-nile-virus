@@ -1,6 +1,7 @@
 # Predicting West Nile Virus in Chicago
 ## GA DSI-6: Project 4
 
+[Here](https://epidemix.github.io) is our website.
 [Here](https://www.kaggle.com/c/predict-west-nile-virus) is a link to the related kaggle page.
 
 Program Files:
