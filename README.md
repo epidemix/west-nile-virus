@@ -1,8 +1,9 @@
 # Predicting West Nile Virus in Chicago
 ## GA DSI-6: Project 4
 
-[Here](https://epidemix.github.io) is our website.
-[Here](https://www.kaggle.com/c/predict-west-nile-virus) is a link to the related kaggle page.
+[Here][1] is our website.
+[Here][2] is a link to our slide deck.
+[Here][3] is a link to the related kaggle page.
 
 Program Files:
 - `master.py`
@@ -31,3 +32,7 @@ To use the prediction system, first run the file `process_data.py` to prepare th
 Then run the file `master.py`.
 Once this program has completed, the mosquito predictions can be found in the `results` directory.
 The advised spray recommendations can then be found in the `spray_recommendations` directory. 
+
+[1]:	https://epidemix.github.io
+[2]:	https://docs.google.com/presentation/d/1XciCHnwldMMYHVOfpLaKPwYjVwCiwK1QMfkAhwT7bK4/edit?usp=sharing
+[3]:	https://www.kaggle.com/c/predict-west-nile-virus
